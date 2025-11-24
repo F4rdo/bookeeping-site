@@ -1,163 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bookkeeping Dashboard</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #1a1a1a;
-    }
-
-    nav {
-      width: 100%;
-      background: #0a2a5a;
-      padding: 15px 20px;
-      color: white;
-      display: flex;
-      gap: 20px;
-      font-size: 1.1rem;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 30px;
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    .card {
-      background: #f5f7fb;
-      padding: 20px;
-      margin: 20px 0;
-      border-radius: 10px;
-      cursor: pointer;
-      border: 1px solid #d9e2ef;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-    }
-
-    th {
-      background: #e8eef8;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookkeeping Dashboard — Fardeen Saad</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#0a2a5a;
+  --accent-2:#123a8a;
+  --success:#0f9d58;
+  --danger:#e53935;
+  --radius:12px;
+  --shadow:0 6px 20px rgba(18,58,138,0.08);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:#0f1724;}
+nav{display:flex;gap:18px;align-items:center;padding:14px 26px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;box-shadow:0 6px 30px rgba(9,29,66,0.18);position:sticky;top:0;z-index:40;}
+nav .brand{font-weight:700;letter-spacing:0.2px;margin-right:12px}
+nav .navlinks{display:flex;gap:14px;margin-left:6px}
+nav a{color:white;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;opacity:0.95;cursor:pointer}
+nav a:hover{transform:translateY(-2px);opacity:1}
+nav a.decoy{opacity:0.8;font-weight:500}
+.wrap{max-width:1100px;margin:28px auto;padding:0 20px}
+.topcards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:18px}
+.card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid rgba(10,42,90,0.06);box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(18,58,138,0.09)}
+.card h3{margin:0;font-size:13px;color:var(--muted);font-weight:600}
+.card .big{margin-top:8px;font-size:20px;font-weight:800}
+.clickable{cursor:pointer}
+.preview table{width:100%;border-collapse:collapse;margin-top:12px}
+.preview th,.preview td{padding:10px;text-align:left;border-bottom:1px solid #eef2fb}
+.preview th{font-size:12px;color:var(--muted);font-weight:700}
+.preview tr:hover{background:#fbfdff}
+.amount.positive{color:var(--success);font-weight:700}
+.amount.negative{color:var(--danger);font-weight:700}
+.hidden{display:none}
+/* Cosmetic enhancements */
+h1,h2{color:var(--accent-2);}
+#activityTable{width:100%;border-collapse:collapse;margin-top:12px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+#activityTable th{background:linear-gradient(180deg,#eef6ff,#e6eefb);padding:12px;text-align:left;font-weight:700;color:#0b254b;cursor:pointer;}
+#activityTable td{padding:12px;border-top:1px solid rgba(10,42,90,0.03);}
+#activityTable tr:hover{background:rgba(10,42,90,0.05);transition:background .2s;}
+</style>
 </head>
 <body>
-  <nav>
-    <a onclick="showHome()">Home</a>
-    <a onclick="showActivity()">Activity</a>
-  </nav>
+<nav>
+<div class="brand">Fardeen • Bookkeeping</div>
+<div class="navlinks">
+<a onclick="switchView('home')">Home</a>
+<a onclick="switchView('activity')">Activity</a>
+<a class="decoy">Statements</a>
+<a class="decoy">Profile</a>
+<a class="decoy">Fund Transfer</a>
+</div>
+<div class="right muted">Preview • Light mode</div>
+</nav>
 
-  <div id="home" class="container">
-    <h1>Welcome Fardeen Saad</h1>
+<div class="wrap">
+<section id="home">
+<h1>Welcome <span style="color:var(--accent-2)">Fardeen Saad</span></h1>
+<div class="topcards">
+<div class="card clickable" onclick="switchView('activity')">
+<h3>Total Balance</h3>
+<div class="big">$<span id="totalBalance">488,290.09</span></div>
+</div>
+<div class="card clickable" onclick="switchView('activity')">
+<h3>Total Monthly Profit / Loss</h3>
+<div class="big" id="monthlyPL">+13,200.00</div>
+</div>
+<div class="card clickable" onclick="switchView('activity')">
+<h3>Recent Activity</h3>
+<div class="preview">
+<table>
+<thead><tr><th>Vendor</th><th>Date</th><th>Type</th><th>Amount</th></tr></thead>
+<tbody id="previewRows"></tbody>
+</table>
+</div>
+</div>
+<div class="card clickable" onclick="switchView('activity')">
+<h3>Total Assets</h3>
+<div class="big">$1,577,089.09</div>
+</div>
+</div>
+</section>
 
-    <div class="card" onclick="showActivity()"><strong>Total Balance:</strong> $488,290.09</div>
-    <div class="card" onclick="showActivity()"><strong>Total Monthly Profit/Loss:</strong> +13,200.00</div>
-    <div class="card" onclick="showActivity()">
-      <strong>Recent Activity:</strong>
-      <table>
-        <tr><th>Vendor</th><th>Date</th><th>Type</th><th>Amount</th></tr>
-        <tr><td>LunarTech Systems</td><td>2025-11-20</td><td>Credit</td><td>$4,500.00</td></tr>
-        <tr><td>Blue Harbor Market</td><td>2025-11-18</td><td>Debit</td><td>$1,120.22</td></tr>
-        <tr><td>Prime Logistics</td><td>2025-11-17</td><td>Debit</td><td>$820.50</td></tr>
-      </table>
-    </div>
+<section id="activity" class="hidden">
+<h2>Activity</h2>
+<table id="activityTable">
+<thead><tr><th>Vendor</th><th>Date</th><th>Type</th><th>Amount</th><th>Balance</th></tr></thead>
+<tbody id="activityBody"></tbody>
+</table>
+</section>
+</div>
 
-    <div class="card" onclick="showActivity()"><strong>Total Assets:</strong> 1,577,089.09</div>
-  </div>
-
-  <div id="activity" class="container hidden">
-    <h1>Activity</h1>
-    <table id="activityTable">
-      <tr>
-        <th>Vendor</th>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Amount</th>
-        <th>Balance</th>
-      </tr>
-    </table>
-  </div>
-
-  <script>
-    function showHome() {
-      document.getElementById("home").classList.remove("hidden");
-      document.getElementById("activity").classList.add("hidden");
-    }
-
-    function showActivity() {
-      document.getElementById("home").classList.add("hidden");
-      document.getElementById("activity").classList.remove("hidden");
-    }
-
-    const transactions = [
-      { vendor: "Apex Digital", date: "2025-11-22", type: "Credit", amount: 3200.00 },
-      { vendor: "Northline Utilities", date: "2025-11-21", type: "Debit", amount: 410.55 },
-      { vendor: "Evergreen Retail", date: "2025-11-21", type: "Debit", amount: 129.99 },
-      { vendor: "Velocity Partners", date: "2025-11-20", type: "Credit", amount: 2500.00 },
-      { vendor: "Solaris Foods", date: "2025-11-20", type: "Debit", amount: 230.78 },
-      { vendor: "Globe Transit", date: "2025-11-19", type: "Debit", amount: 865.33 },
-      { vendor: "Hyperion Labs", date: "2025-11-19", type: "Credit", amount: 3900.00 },
-      { vendor: "Blue Harbor Market", date: "2025-11-18", type: "Debit", amount: 1120.22 },
-      { vendor: "Prime Logistics", date: "2025-11-17", type: "Debit", amount: 820.50 },
-      { vendor: "Sapphire Finance", date: "2025-11-17", type: "Credit", amount: 5000.00 },
-      { vendor: "MetroTech Supply", date: "2025-11-16", type: "Debit", amount: 342.10 },
-      { vendor: "UrbanSphere", date: "2025-11-15", type: "Debit", amount: 654.88 },
-      { vendor: "NovaCore Media", date: "2025-11-14", type: "Credit", amount: 2800.00 },
-      { vendor: "Golden Peak", date: "2025-11-14", type: "Debit", amount: 140.55 },
-      { vendor: "TransWorld Shipping", date: "2025-11-13", type: "Debit", amount: 999.22 },
-      { vendor: "Crystal Networks", date: "2025-11-12", type: "Credit", amount: 1700.00 },
-      { vendor: "HiLine Furnishings", date: "2025-11-12", type: "Debit", amount: 225.40 },
-      { vendor: "Obsidian Tools", date: "2025-11-11", type: "Debit", amount: 512.90 },
-      { vendor: "BrightWave Media", date: "2025-11-10", type: "Credit", amount: 3100.00 },
-      { vendor: "QuickMart", date: "2025-11-09", type: "Debit", amount: 78.22 }
-    ];
-
-    let runningBalance = 488290.09;
-
-    const table = document.getElementById("activityTable");
-
-    transactions.forEach(t => {
-      if (t.type === "Credit") runningBalance -= t.amount;
-      else runningBalance += t.amount;
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${t.vendor}</td>
-        <td>${t.date}</td>
-        <td>${t.type}</td>
-        <td>$${t.amount.toFixed(2)}</td>
-        <td>$${runningBalance.toFixed(2)}</td>
-      `;
-      table.appendChild(row);
-    });
-  </script>
+<script>
+let transactions = [
+{vendor:"Apex Digital", date:"2025-11-22", type:"Credit", amount:3200.00},
+{vendor:"Northline Utilities", date:"2025-11-21", type:"Debit", amount:410.55},
+{vendor:"Evergreen Retail", date:"2025-11-21", type:"Debit", amount:129.99},
+{vendor:"Velocity Partners", date:"2025-11-20", type:"Credit", amount:2500.00},
+{vendor:"Solaris Foods", date:"2025-11-19", type:"Debit", amount:230.78},
+{vendor:"Globe Transit", date:"2025-11-18", type:"Debit", amount:865.33},
+{vendor:"Hyperion Labs", date:"2025-11-17", type:"Credit", amount:3900.00},
+{vendor:"Blue Harbor Market", date:"2025-11-16", type:"Debit", amount:1120.22},
+{vendor:"Prime Logistics", date:"2025-11-15", type:"Debit", amount:820.50},
+{vendor:"Sapphire Finance", date:"2025-11-14", type:"Credit", amount:5000.00},
+{vendor:"MetroTech Supply", date:"2025-11-13", type:"Debit", amount:342.10},
+{vendor:"UrbanSphere", date:"2025-11-12", type:"Debit", amount:654.88},
+{vendor:"NovaCore Media", date:"2025-11-11", type:"Credit", amount:2800.00},
+{vendor:"Golden Peak", date:"2025-11-10", type:"Debit", amount:140.55},
+{vendor:"TransWorld Shipping", date:"2025-11-09", type:"Debit", amount:999.22},
+{vendor:"Crystal Networks", date:"2025-11-08", type:"Credit", amount:1700.00},
+{vendor:"HiLine Furnishings", date:"2025-11-07", type:"Debit", amount:225.40},
+{vendor:"Obsidian Tools", date:"2025-11-06", type:"Debit", amount:512.90},
+{vendor:"BrightWave Media", date:"2025-11-05", type:"Credit", amount:3100.00},
+{vendor:"QuickMart", date:"2025-11-04", type:"Debit", amount:78.22}
+];
+const FINAL_BALANCE = 488290.09;
+function computeBalances(arr){
+  let a=arr.slice().sort((x,y)=> new Date(x.date)-new Date(y.date));
+  let netEffect=a.reduce((s,t)=> s+(t.type==='Credit'?t.amount:-t.amount),0);
+  let running=FINAL_BALANCE-netEffect;
+  a.forEach(t=>{running+=(t.type==='Credit'?t.amount:-t.amount); t.running=+running.toFixed(2);});
+  return a;
+}
+function initPreview(){
+  const sorted=transactions.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const container=document.getElementById('previewRows'); container.innerHTML='';
+  sorted.slice(0,3).forEach(t=>{
+    const tr=document.createElement('tr');
+    const amt=(t.type==='Debit'?'-':'')+'$'+t.amount.toFixed(2);
+    tr.innerHTML=`<td>${t.vendor}</td><td>${t.date}</td><td>${t.type}</td><td class='${t.type==='Credit'?'amount positive':'amount negative'}'>${amt}</td>`;
+    container.appendChild(tr);
+  });
+}
+function renderActivity(){
+  const asc=computeBalances(transactions);
+  const tbody=document.getElementById('activityBody'); tbody.innerHTML='';
+  asc.slice().reverse().forEach(t=>{
+    const amt=(t.type==='Debit'?'-':'')+'$'+t.amount.toFixed(2);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${t.vendor}</td><td>${t.date}</td><td>${t.type}</td><td class='${t.type==='Credit'?'amount positive':'amount negative'}'>${amt}</td><td>$${t.running}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+function switchView(name){
+  document.getElementById('home').style.display=name==='home'?'block':'none';
+  document.getElementById('activity').style.display=name==='activity'?'block':'none';
+  if(name==='activity') renderActivity();
+}
+window.onload=function(){initPreview(); switchView('home');};
+</script>
 </body>
 </html>
