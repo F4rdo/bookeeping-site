@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookkeeping Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+
+    nav {
+      width: 100%;
+      background: #0a2a5a;
+      padding: 15px 20px;
+      color: white;
+      display: flex;
+      gap: 20px;
+      font-size: 1.1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .card {
+      background: #f5f7fb;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1px solid #d9e2ef;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background: #e8eef8;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a onclick="showHome()">Home</a>
+    <a onclick="showActivity()">Activity</a>
+  </nav>
+
+  <div id="home" class="container">
+    <h1>Welcome Fardeen Saad</h1>
+
+    <div class="card" onclick="showActivity()"><strong>Total Balance:</strong> $488,290.09</div>
+    <div class="card" onclick="showActivity()"><strong>Total Monthly Profit/Loss:</strong> +13,200.00</div>
+    <div class="card" onclick="showActivity()">
+      <strong>Recent Activity:</strong>
+      <table>
+        <tr><th>Vendor</th><th>Date</th><th>Type</th><th>Amount</th></tr>
+        <tr><td>LunarTech Systems</td><td>2025-11-20</td><td>Credit</td><td>$4,500.00</td></tr>
+        <tr><td>Blue Harbor Market</td><td>2025-11-18</td><td>Debit</td><td>$1,120.22</td></tr>
+        <tr><td>Prime Logistics</td><td>2025-11-17</td><td>Debit</td><td>$820.50</td></tr>
+      </table>
+    </div>
+
+    <div class="card" onclick="showActivity()"><strong>Total Assets:</strong> 1,577,089.09</div>
+  </div>
+
+  <div id="activity" class="container hidden">
+    <h1>Activity</h1>
+    <table id="activityTable">
+      <tr>
+        <th>Vendor</th>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Balance</th>
+      </tr>
+    </table>
+  </div>
+
+  <script>
+    function showHome() {
+      document.getElementById("home").classList.remove("hidden");
+      document.getElementById("activity").classList.add("hidden");
+    }
+
+    function showActivity() {
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("activity").classList.remove("hidden");
+    }
+
+    const transactions = [
+      { vendor: "Apex Digital", date: "2025-11-22", type: "Credit", amount: 3200.00 },
+      { vendor: "Northline Utilities", date: "2025-11-21", type: "Debit", amount: 410.55 },
+      { vendor: "Evergreen Retail", date: "2025-11-21", type: "Debit", amount: 129.99 },
+      { vendor: "Velocity Partners", date: "2025-11-20", type: "Credit", amount: 2500.00 },
+      { vendor: "Solaris Foods", date: "2025-11-20", type: "Debit", amount: 230.78 },
+      { vendor: "Globe Transit", date: "2025-11-19", type: "Debit", amount: 865.33 },
+      { vendor: "Hyperion Labs", date: "2025-11-19", type: "Credit", amount: 3900.00 },
+      { vendor: "Blue Harbor Market", date: "2025-11-18", type: "Debit", amount: 1120.22 },
+      { vendor: "Prime Logistics", date: "2025-11-17", type: "Debit", amount: 820.50 },
+      { vendor: "Sapphire Finance", date: "2025-11-17", type: "Credit", amount: 5000.00 },
+      { vendor: "MetroTech Supply", date: "2025-11-16", type: "Debit", amount: 342.10 },
+      { vendor: "UrbanSphere", date: "2025-11-15", type: "Debit", amount: 654.88 },
+      { vendor: "NovaCore Media", date: "2025-11-14", type: "Credit", amount: 2800.00 },
+      { vendor: "Golden Peak", date: "2025-11-14", type: "Debit", amount: 140.55 },
+      { vendor: "TransWorld Shipping", date: "2025-11-13", type: "Debit", amount: 999.22 },
+      { vendor: "Crystal Networks", date: "2025-11-12", type: "Credit", amount: 1700.00 },
+      { vendor: "HiLine Furnishings", date: "2025-11-12", type: "Debit", amount: 225.40 },
+      { vendor: "Obsidian Tools", date: "2025-11-11", type: "Debit", amount: 512.90 },
+      { vendor: "BrightWave Media", date: "2025-11-10", type: "Credit", amount: 3100.00 },
+      { vendor: "QuickMart", date: "2025-11-09", type: "Debit", amount: 78.22 }
+    ];
+
+    let runningBalance = 488290.09;
+
+    const table = document.getElementById("activityTable");
+
+    transactions.forEach(t => {
+      if (t.type === "Credit") runningBalance -= t.amount;
+      else runningBalance += t.amount;
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${t.vendor}</td>
+        <td>${t.date}</td>
+        <td>${t.type}</td>
+        <td>$${t.amount.toFixed(2)}</td>
+        <td>$${runningBalance.toFixed(2)}</td>
+      `;
+      table.appendChild(row);
+    });
+  </script>
+</body>
+</html>
